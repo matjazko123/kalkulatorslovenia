@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slovenia Corporate Tax Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .calculator {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #007BFF;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            font-size: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Slovenia Corporate Tax Calculator</h1>
+        <label for="profit">Enter Profit (€):</label>
+        <input type="number" id="profit" placeholder="Enter profit amount">
+        <label for="expenses">Enter Expenses (€):</label>
+        <input type="number" id="expenses" placeholder="Enter expenses amount">
+        <button onclick="calculateTax()">Calculate Tax</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateTax() {
+            const inputProfit = parseFloat(document.getElementById('profit').value);
+            const inputExpenses = parseFloat(document.getElementById('expenses').value);
+            const profit = inputProfit - (inputExpenses || 0);
+            let tax = 0;
+
+            if (isNaN(inputProfit) || inputProfit < 0) {
+                document.getElementById('result').innerHTML = "Please enter a valid profit amount.";
+                return;
+            }
+
+            if (isNaN(inputExpenses) || inputExpenses < 0) {
+                document.getElementById('result').innerHTML = "Please enter a valid expenses amount.";
+                return;
+            }
+
+            if (profit > 74160) {
+                tax += (profit - 74160) * 0.50;
+            }
+            if (profit > 51500) {
+                tax += (Math.min(profit, 74160) - 51500) * 0.39;
+            }
+            if (profit > 25750) {
+                tax += (Math.min(profit, 51500) - 25750) * 0.33;
+            }
+            if (profit > 8755) {
+                tax += (Math.min(profit, 25750) - 8755) * 0.26;
+            }
+            if (profit > 0) {
+                tax += Math.min(profit, 8755) * 0.16;
+            }
+
+            document.getElementById('result').innerHTML = `For a profit of €${inputProfit.toFixed(2)} and expenses of €${(inputExpenses || 0).toFixed(2)}, the taxable profit is €${profit.toFixed(2)}, and the tax is €${tax.toFixed(2)}.`;
+        }
+    </script>
+</body>
+</html>
